@@ -1,10 +1,7 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import praktikum.Bun;
-import praktikum.Burger;
-import praktikum.Database;
-import praktikum.Ingredient;
+import praktikum.*;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -12,14 +9,13 @@ import static org.mockito.Mockito.when;
 
 public class BurgerTest {
     Burger burger;
-    Database database = new Database();
-    //2 набора ингредиентов из базы
-    Ingredient ingredient_0 = database.availableIngredients().get(0);
-    Ingredient ingredient_1 = database.availableIngredients().get(1);
+    //Данные для тестов из Database
+    Bun bun = new Bun("red bun", 300);
+    Ingredient ingredient_0 = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
+    Ingredient ingredient_1 = new Ingredient(IngredientType.FILLING, "cutlet", 100);
 
     //стаб для булки
-    public Bun getMockedBun() {
-        Bun bun = database.availableBuns().get(0);
+    public Bun getMockedBun(Bun bun) {
         Bun bunMock = mock(Bun.class);
         when(bunMock.getName()).thenReturn(bun.name);
         when(bunMock.getPrice()).thenReturn(bun.price);
@@ -42,7 +38,7 @@ public class BurgerTest {
 
     @Test
     public void setBunsCheckWithMockData() {
-        Bun bunExpected = getMockedBun();
+        Bun bunExpected = getMockedBun(bun);
         burger.setBuns(bunExpected);
         Assert.assertEquals(bunExpected, burger.bun);
 
@@ -75,26 +71,26 @@ public class BurgerTest {
 
     @Test
     public void getPriceCheckWithMockData() {
-        Bun bun = getMockedBun();
+        Bun bunForTest = getMockedBun(bun);
         Ingredient ingredient = getMockedIngredient(ingredient_0);
-        burger.setBuns(bun);
+        burger.setBuns(bunForTest);
         burger.addIngredient(ingredient);
         float actual = burger.getPrice();
-        Assert.assertEquals(300, actual, 0);
+        Assert.assertEquals(700, actual, 0);
     }
 
     @Test
     public void getReceiptCheckWithMockData() {
-        Bun bun = getMockedBun();
+        Bun bunForTest = getMockedBun(bun);
         Ingredient ingredient = getMockedIngredient(ingredient_0);
-        burger.setBuns(bun);
+        burger.setBuns(bunForTest);
         burger.addIngredient(ingredient);
         String actual = burger.getReceipt();
-        String expected = String.format("(==== black bun ====)%n" +
+        String expected = String.format("(==== red bun ====)%n" +
                 "= sauce hot sauce =%n" +
-                "(==== black bun ====)%n" +
+                "(==== red bun ====)%n" +
                 "%n" +
-                "Price: 300,000000%n");
+                "Price: 700,000000%n");
         Assert.assertEquals(expected, actual);
     }
 
