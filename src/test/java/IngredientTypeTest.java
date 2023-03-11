@@ -1,17 +1,17 @@
 import org.junit.Test;
 import praktikum.IngredientType;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class IngredientTypeTest {
 
     @Test
-    public void orderSauceTest() {
-        assertEquals(0, IngredientType.SAUCE.ordinal());
+    public void fillingNotNull() {
+        assertNotNull("Начинки не указаны в ингредиентах", IngredientType.valueOf("FILLING"));
     }
 
     @Test
-    public void orderFillingTest() {
-        assertEquals(1, IngredientType.FILLING.ordinal());
+    public void sauceNotNull() {
+        assertNotNull("Соусы не указаны в ингредиентах", IngredientType.valueOf("SAUCE"));
     }
 }

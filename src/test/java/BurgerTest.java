@@ -1,33 +1,41 @@
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import praktikum.*;
+import praktikum.Bun;
+import praktikum.Burger;
+import praktikum.Ingredient;
+import praktikum.IngredientType;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
 public class BurgerTest {
-    Burger burger;
-    //Данные для тестов из Database
-    Bun bun = new Bun("red bun", 300);
-    Ingredient ingredient_0 = new Ingredient(IngredientType.SAUCE, "hot sauce", 100);
-    Ingredient ingredient_1 = new Ingredient(IngredientType.FILLING, "cutlet", 100);
+    private Burger burger;
 
     //стаб для булки
-    public Bun getMockedBun(Bun bun) {
+    public Bun getMockedBun() {
         Bun bunMock = mock(Bun.class);
-        when(bunMock.getName()).thenReturn(bun.name);
-        when(bunMock.getPrice()).thenReturn(bun.price);
+        when(bunMock.getName()).thenReturn("red bun");
+        when(bunMock.getPrice()).thenReturn(300f);
         return bunMock;
     }
 
-    //стаб для ингридиентов
-    public Ingredient getMockedIngredient(Ingredient ingredient) {
+    //стаб для первого ингредиента
+    public Ingredient getMockedFirstIngredient() {
         Ingredient ingredientMock = mock(Ingredient.class);
-        when(ingredientMock.getType()).thenReturn(ingredient.type);
-        when(ingredientMock.getName()).thenReturn(ingredient.name);
-        when(ingredientMock.getPrice()).thenReturn(ingredient.price);
+        when(ingredientMock.getType()).thenReturn(IngredientType.SAUCE);
+        when(ingredientMock.getName()).thenReturn("hot sauce");
+        when(ingredientMock.getPrice()).thenReturn(100f);
+        return ingredientMock;
+    }
+
+    //стаб для второго ингредиента
+    public Ingredient getMockedSecondIngredient() {
+        Ingredient ingredientMock = mock(Ingredient.class);
+        when(ingredientMock.getType()).thenReturn(IngredientType.FILLING);
+        when(ingredientMock.getName()).thenReturn("cutlet");
+        when(ingredientMock.getPrice()).thenReturn(100f);
         return ingredientMock;
     }
 
@@ -38,7 +46,7 @@ public class BurgerTest {
 
     @Test
     public void setBunsCheckWithMockData() {
-        Bun bunExpected = getMockedBun(bun);
+        Bun bunExpected = getMockedBun();
         burger.setBuns(bunExpected);
         Assert.assertEquals(bunExpected, burger.bun);
 
@@ -46,14 +54,14 @@ public class BurgerTest {
 
     @Test
     public void addIngredientCheckWithMockData() {
-        Ingredient ingredientExpected = getMockedIngredient(ingredient_0);
+        Ingredient ingredientExpected = getMockedFirstIngredient();
         burger.addIngredient(ingredientExpected);
         Assert.assertEquals(ingredientExpected, burger.ingredients.get(0));
     }
 
     @Test
     public void removeIngredientCheckWithMockData() {
-        Ingredient ingredient = getMockedIngredient(ingredient_0);
+        Ingredient ingredient = getMockedFirstIngredient();
         burger.addIngredient(ingredient);
         burger.removeIngredient(0);
         Assert.assertTrue(burger.ingredients.isEmpty());
@@ -61,8 +69,8 @@ public class BurgerTest {
 
     @Test
     public void moveIngredientCheckWithMockData() {
-        Ingredient firstIngredient = getMockedIngredient(ingredient_0);
-        Ingredient secondIngredient = getMockedIngredient(ingredient_1);
+        Ingredient firstIngredient = getMockedFirstIngredient();
+        Ingredient secondIngredient = getMockedSecondIngredient();
         burger.addIngredient(firstIngredient);
         burger.addIngredient(secondIngredient);
         burger.moveIngredient(0, 1);
@@ -71,8 +79,8 @@ public class BurgerTest {
 
     @Test
     public void getPriceCheckWithMockData() {
-        Bun bunForTest = getMockedBun(bun);
-        Ingredient ingredient = getMockedIngredient(ingredient_0);
+        Bun bunForTest = getMockedBun();
+        Ingredient ingredient = getMockedFirstIngredient();
         burger.setBuns(bunForTest);
         burger.addIngredient(ingredient);
         float actual = burger.getPrice();
@@ -81,8 +89,8 @@ public class BurgerTest {
 
     @Test
     public void getReceiptCheckWithMockData() {
-        Bun bunForTest = getMockedBun(bun);
-        Ingredient ingredient = getMockedIngredient(ingredient_0);
+        Bun bunForTest = getMockedBun();
+        Ingredient ingredient = getMockedFirstIngredient();
         burger.setBuns(bunForTest);
         burger.addIngredient(ingredient);
         String actual = burger.getReceipt();
